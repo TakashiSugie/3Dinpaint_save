@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+#file1=./image/IMG_4473.png
+#file2=./image/IMG_4474.png
+#file1=./image/IMG_4482.png
+#file2=./image/IMG_4483.png
+#file1=./image/im1.png
+#file2=./image/im0.png
+file1=./image/04_04.png
+file2=./image/08_08.png
+
+#python ./FPTool/setFeaturePoint.py $file1 $file2
+python ./CV_matching/Matching.py $file1 $file2
+
+python main.py --filePath $file1 --config argument.yml
+python main.py --filePath $file2 --config argument2.yml
+
+python ./FPTool/LR.py $file1 $file2
+python ./FPTool/createNewPly.py $file1 $file2
+
+python fromPly.py --filePath1 $file1 --filePath2 $file2 --config argument.yml
